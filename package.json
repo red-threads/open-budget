@@ -17,7 +17,7 @@
     "dev": "nodemon --inspect",
     "push-tags": "git push --follow-tags origin master",
     "deploy": "now --public",
-    "prerelease": "npm test",
+    "prerelease": "npm run lint",
     "release": "standard-version",
     "postrelease": "run-p push-tags deploy"
   },
