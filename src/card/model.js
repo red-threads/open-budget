@@ -24,7 +24,7 @@ const schema = mongoose.Schema(merge(defaultSchema, {
   givenName: {
     type: String,
     required: function () {
-      this.category === 'person'
+      return this.category === 'person'
     }
   },
   additionalName: {
@@ -33,7 +33,7 @@ const schema = mongoose.Schema(merge(defaultSchema, {
   familyName: {
     type: String,
     required: function () {
-      this.category === 'person'
+      return this.category === 'person'
     }
   },
   nickname: {
@@ -94,7 +94,7 @@ const schema = mongoose.Schema(merge(defaultSchema, {
   organization: {
     type: String,
     required: function () {
-      this.category === 'business'
+      return this.category === 'business'
     }
   },
   role: {
@@ -106,7 +106,7 @@ const schema = mongoose.Schema(merge(defaultSchema, {
     minlength: 15,
     validate: function (v) {
       return this.currency ? !!v : true
-    },
+    }
   },
   bic: {
     type: String,
@@ -119,7 +119,7 @@ const schema = mongoose.Schema(merge(defaultSchema, {
     enum: ['EUR', 'GBP'],
     validate: function (v) {
       return this.iban ? !!v : true
-    },
+    }
   }
 }), options)
 const resourceType = {
@@ -137,7 +137,7 @@ const resourceType = {
       },
       currency: {
         description: 'Account\'s currency. If this is specified, IBAN is required'
-      },
+      }
     }
   }
 }
