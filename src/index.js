@@ -5,21 +5,19 @@ const API = require('json-api')
 const card = require('./card/model')
 const db = require('./db')
 const organization = require('./organization/model')
-const { description: name } = require('../package.json')
+const { description: name, now: { alias } } = require('../package.json')
+const rollbar = require('./rollbar')
 const transaction = require('./transaction/model')
-const vatRate = require('./vat-rate/model')
-
-db()
+const transactionType = require('./transaction-type/model')
 
 const port = process.env.PORT || 3000
-const host = `http://127.0.0.1:${port}`
+const host = process.env.NOW ? `http://${alias}.now.sh` : `http://127.0.0.1:${port}`
 const entities = [
   card,
   organization,
   transaction,
-  vatRate
+  transactionType
 ]
-
 const models = entities.reduce((modelsToReturn, { modelName, model }) => {
   modelsToReturn[modelName] = model
   return modelsToReturn
@@ -28,6 +26,11 @@ const resources = entities.reduce((resourcesToReturn, { pluralName, resourceType
   resourcesToReturn[pluralName] = resourceType
   return resourcesToReturn
 }, {})
+const entitiesToRoutes = entities
+  .map(({ pluralName }) => pluralName)
+  .join('|')
+
+db()
 
 const dbAdapter = new API.dbAdapters.Mongoose(models)
 const registry = new API.ResourceTypeRegistry(resources, {
@@ -45,9 +48,6 @@ const { apiRequest, docsRequest } = new API.httpStrategies.Express(Controller, D
   host
 })
 
-const entitiesToRoutes = [card, organization, transaction, vatRate]
-  .map(({ pluralName }) => pluralName)
-  .join('|')
 app.get('/', docsRequest)
 app.get(`/:type(${entitiesToRoutes})`, apiRequest)
 app.get(`/:type(${entitiesToRoutes})/:id`, apiRequest)
@@ -62,4 +62,5 @@ app.patch(`/:type(${entitiesToRoutes}|places)/:id/relationships/:relationship`, 
 app.delete(`/:type(${entitiesToRoutes}|places)/:id/relationships/:relationship`, apiRequest)
 */
 
+app.use(rollbar.errorHandler())
 app.listen(port)
