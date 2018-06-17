@@ -8,7 +8,7 @@ const modelName = 'Transaction'
 const schema = mongoose.Schema(merge(defaultSchema, {
   type: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'VatRate',
+    ref: 'TransactionType',
     required: true
   },
   from: {
