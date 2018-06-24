@@ -2,13 +2,13 @@ require('dotenv').config()
 const app = require('express')()
 const API = require('json-api')
 
-const card = require('./card/model')
+const card = require('./card')
 const db = require('./db')
-const organization = require('./organization/model')
+const organization = require('./organization')
 const { description: name, now: { alias } } = require('../package.json')
 const rollbar = require('./rollbar')
-const transaction = require('./transaction/model')
-const transactionType = require('./transaction-type/model')
+const transaction = require('./transaction')
+const transactionType = require('./transaction-type')
 
 const port = process.env.PORT || 3000
 const host = process.env.NOW ? `http://${alias}.now.sh` : `http://127.0.0.1:${port}`
