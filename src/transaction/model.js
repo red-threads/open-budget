@@ -5,7 +5,7 @@ const { getMongooseSchema, getMongooseModel } = require('../schema')
 const name = 'transaction'
 const modelName = 'Transaction'
 
-function getDescription(field) {
+function getDescription (field) {
   switch (field) {
     case 'originalTransaction':
       return 'In case this transaction originates from another recorded transaction (e.g.: refund), please use this field'
