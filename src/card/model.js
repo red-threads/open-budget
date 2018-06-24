@@ -1,127 +1,10 @@
-const mongoose = require('mongoose')
+const Joi = require('joi')
 const pluralize = require('pluralize')
-const { merge } = require('timm')
-const { defaultSchema, options } = require('../schema')
+const { getMongooseSchema, getMongooseModel } = require('../schema')
 
 const name = 'card'
 const modelName = 'Card'
-const schema = mongoose.Schema(merge(defaultSchema, {
-  category: {
-    type: String,
-    enum: ['business', 'person'],
-    required: true
-  },
-  name: {
-    type: String,
-    set: function () {
-      if (this.category === 'person') {
-        return `${this.given_name} ${this.family_name}`
-      } else {
-        return `${this.organization}`
-      }
-    }
-  },
-  givenName: {
-    type: String,
-    required: function () {
-      return this.category === 'person'
-    }
-  },
-  additionalName: {
-    type: String
-  },
-  familyName: {
-    type: String,
-    required: function () {
-      return this.category === 'person'
-    }
-  },
-  nickname: {
-    type: String
-  },
-  email: {
-    type: String,
-    required: true
-  },
-  logo: {
-    type: String
-  },
-  photo: {
-    type: String
-  },
-  url: {
-    type: String
-  },
-  extendedAddress: {
-    type: String
-  },
-  streetAddress: {
-    type: String
-  },
-  locality: {
-    type: String
-  },
-  region: {
-    type: String
-  },
-  postalCode: {
-    type: String
-  },
-  countryCode: {
-    type: String,
-    required: true,
-    minlength: 2,
-    maxlengh: 2
-  },
-  geoLatitude: {
-    type: String
-  },
-  geoLongitude: {
-    type: String
-  },
-  telephone: {
-    type: String
-  },
-  notes: {
-    type: String
-  },
-  birthday: {
-    type: Date
-  },
-  publicKey: {
-    type: String
-  },
-  organization: {
-    type: String,
-    required: function () {
-      return this.category === 'business'
-    }
-  },
-  role: {
-    type: String
-  },
-  iban: {
-    type: String,
-    uppercase: true,
-    minlength: 15,
-    validate: function (v) {
-      return this.currency ? !!v : true
-    }
-  },
-  bic: {
-    type: String,
-    uppercase: true,
-    minlength: 8,
-    maxlengh: 11
-  },
-  currency: {
-    type: String,
-    enum: ['EUR', 'GBP'],
-    validate: function (v) {
-      return this.iban ? !!v : true
-    }
-  }
-}), options)
+
 const resourceType = {
   urlTemplates: {
     self: `/${name}/{id}`
@@ -142,9 +25,41 @@ const resourceType = {
   }
 }
 
+const joiSchema = Joi.object({
+  category: Joi.string().required().valid(['business', 'person']),
+  name: Joi.string().required(),
+  givenName: Joi.string(),
+  additionalName: Joi.string(),
+  familyName: Joi.string(),
+  nickname: Joi.string(),
+  email: Joi.string().required().email(),
+  logo: Joi.string(),
+  photo: Joi.string(),
+  url: Joi.string(),
+  extendedAddress: Joi.string(),
+  streetAddress: Joi.string(),
+  locality: Joi.string(),
+  region: Joi.string(),
+  postalCode: Joi.string(),
+  countryCode: Joi.string().required().length(2).regex(/^[A-Z]{2}$/),
+  geoLatitude: Joi.string(),
+  geoLongitude: Joi.string(),
+  telephone: Joi.string(),
+  notes: Joi.string(),
+  birthday: Joi.date(),
+  publicKey: Joi.string(),
+  organization: Joi.string(),
+  role: Joi.string(),
+  iban: Joi.string().min(15),
+  bic: Joi.string().min(8).max(11),
+  currency: Joi.string().valid(['EUR', 'GBP'])
+})
+const mongooseSchema = getMongooseSchema(joiSchema)
+
 exports.name = name
 exports.pluralName = pluralize(name)
 exports.modelName = modelName
-exports.schema = schema
-exports.model = mongoose.model(modelName, schema)
+exports.joiSchema = joiSchema
+exports.mongooseSchema = mongooseSchema
+exports.model = getMongooseModel(modelName, mongooseSchema)
 exports.resourceType = resourceType
