@@ -5,13 +5,13 @@ const schemaOptions = {
   timestamps: true
 }
 
-function getType(what, meta) {
+function getType (what, meta) {
   switch (what) {
     case 'string':
       return String
     case 'number':
       return Number
-    case 'date': 
+    case 'date':
       return Date
     case 'mixed':
       if (meta.objectId && meta.ref) {
@@ -21,7 +21,7 @@ function getType(what, meta) {
   }
 }
 
-function getRef({ objectId, ref } = {}) {
+function getRef ({ objectId, ref } = {}) {
   if (objectId && ref) {
     return {
       ref
@@ -29,7 +29,7 @@ function getRef({ objectId, ref } = {}) {
   }
 }
 
-function getRequired(tests = []) {
+function getRequired (tests = []) {
   if (tests.includes('required')) {
     return {
       required: true
@@ -37,14 +37,14 @@ function getRequired(tests = []) {
   }
 }
 
-function getValidation(schema, key) {
+function getValidation (schema, key) {
   const subSchema = reach(schema, key)
   return {
     validate: (v) => subSchema.isValid(v)
   }
 }
 
-function getMongooseSchema(schema) {
+function getMongooseSchema (schema) {
   const { fields } = schema.describe()
   return new Mongoose.Schema(
     Object.keys(fields)
@@ -64,7 +64,7 @@ function getMongooseSchema(schema) {
   )
 }
 
-function getMongooseModel(modelName, schema) {
+function getMongooseModel (modelName, schema) {
   return Mongoose.model(modelName, getMongooseSchema(schema))
 }
 

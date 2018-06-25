@@ -24,4 +24,3 @@ exports.modelName = modelName
 exports.name = name
 exports.resourceType = toResourceType(name, schema)
 exports.schema = schema
-  
