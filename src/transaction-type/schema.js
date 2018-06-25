@@ -1,4 +1,4 @@
-const { string, object } = require('yup')
+const { number, object, string } = require('yup')
 
 const toResourceType = require('../converters/to-resource-type')
 
@@ -10,7 +10,7 @@ const schema = object()
     description: 'Transaction types and related VAT rates'
   })
   .shape({
-    type: Joi.string().required().valid([
+    type: string().required().oneOf([
       'taxes',
       'ticket',
       'donation',
@@ -21,12 +21,12 @@ const schema = object()
       'physical_service',
       'physical_good'
     ]),
-    value: Joi.number().required().integer().meta({
+    value: number().required().integer().meta({
       description: 'Percent value. 1 === 0.01%, 100 === 1%'
     }),
-    note: Joi.string().required(),
-    fromCountry: Joi.string().required().length(2).regex(/^[A-Z]{2}$/),
-    toCountry: Joi.string().required().length(2).regex(/^[A-Z]{2}$/)
+    note: string().required(),
+    fromCountry: string().required().length(2).matches(/^[A-Z]{2}$/),
+    toCountry: string().required().length(2).matches(/^[A-Z]{2}$/)
   })
 
 exports.modelName = modelName

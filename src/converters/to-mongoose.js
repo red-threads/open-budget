@@ -5,42 +5,51 @@ const schemaOptions = {
   timestamps: true
 }
 
-function getType (what, meta) {
-  switch (what) {
+function getType ({ type, innerType, meta = {} }) {
+  switch (type) {
     case 'string':
       return String
     case 'number':
       return Number
     case 'date':
       return Date
+    case 'array':
+      return [ getType(innerType) ]
     case 'mixed':
-      if (meta.objectId && meta.ref) {
-        return Mongoose.Schema.Types.ObjectId
-      }
-      return Mongoose.Schema.Types.Mixed
+      return Mongoose.Schema.Types[meta.type || 'Mixed']
   }
 }
 
-function getRef ({ objectId, ref } = {}) {
-  if (objectId && ref) {
+function extractMeta ({ meta: { type, ref } = {} }) {
+  if (type === 'ObjectId' && ref) {
     return {
       ref
     }
   }
 }
 
-function getRequired (tests = []) {
+function extractTests ({ tests = [] }) {
+  let basicTests = {}
   if (tests.includes('required')) {
-    return {
-      required: true
-    }
+    basicTests.required = true
   }
+  return basicTests
 }
 
-function getValidation (schema, key) {
+function extractValidation (schema, key) {
   const subSchema = reach(schema, key)
   return {
     validate: (v) => subSchema.isValid(v)
+  }
+}
+
+function extractDefault (schema, key) {
+  const subSchema = reach(schema, key)
+  const defaultValue = subSchema.default()
+  if (defaultValue) {
+    return {
+      default: defaultValue
+    }
   }
 }
 
@@ -49,14 +58,15 @@ function getMongooseSchema (schema) {
   return new Mongoose.Schema(
     Object.keys(fields)
       .reduce((mongooseFields, key) => {
-        const { type, meta, tests } = fields[key]
+        const fieldSchemaDescription = fields[key]
         mongooseFields[key] = Object.assign(
           {
-            type: getType(type, meta)
+            type: getType(fieldSchemaDescription)
           },
-          getRef(meta),
-          getRequired(tests),
-          getValidation(schema, key)
+          extractDefault(schema, key),
+          extractMeta(fieldSchemaDescription),
+          extractTests(fieldSchemaDescription),
+          extractValidation(schema, key)
         )
         return mongooseFields
       }, {}),
