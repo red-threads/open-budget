@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/red-threads/open-budget-api/compare/v0.1.1...v0.1.2) (2018-06-25)
+
+
+### Bug Fixes
+
+* lint issues ([547a40d](https://github.com/red-threads/open-budget-api/commit/547a40d))
+* lint issues ([254b29e](https://github.com/red-threads/open-budget-api/commit/254b29e))
+* **schema:** convert all remaning schema types in use ([87eb276](https://github.com/red-threads/open-budget-api/commit/87eb276))
+* **schemas:** refactor and use yup rather than joi+joigoose ([5161019](https://github.com/red-threads/open-budget-api/commit/5161019))
+
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://github.com/red-threads/open-budget-api/compare/v0.1.0...v0.1.1) (2018-06-24)
 
