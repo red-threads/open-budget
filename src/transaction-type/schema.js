@@ -7,7 +7,8 @@ const name = 'transaction-type'
 
 const schema = object()
   .meta({
-    description: 'Transaction types and related VAT rates'
+    description: 'Transaction types and related VAT rates',
+    name
   })
   .shape({
     type: string().required().oneOf([

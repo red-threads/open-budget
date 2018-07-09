@@ -7,7 +7,8 @@ const name = 'card'
 
 const schema = object()
   .meta({
-    description: 'Address and contact information for a company, person, organization. It tries to mimick the format available at http://microformats.org/wiki/h-card'
+    description: 'Address and contact information for a company, person, organization. It tries to mimick the format available at http://microformats.org/wiki/h-card',
+    name
   })
   .shape({
     category: string().required().oneOf(['business', 'person']),

@@ -7,7 +7,8 @@ const name = 'transaction'
 
 const schema = object()
   .meta({
-    description: 'Transaction'
+    description: 'Transaction',
+    name
   })
   .shape({
     type: mixed().required().meta({ type: 'ObjectId', ref: 'TransactionType' }),
