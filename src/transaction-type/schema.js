@@ -5,25 +5,30 @@ const toResourceType = require('../converters/to-resource-type')
 const modelName = 'TransactionType'
 const name = 'transaction-type'
 
+const typeEnums = [
+  'taxes',
+  'ticket',
+  'donation',
+  'ads',
+  'sponsorship',
+  'refund',
+  'online_service',
+  'physical_service',
+  'physical_good'
+]
+
 const schema = object()
   .meta({
     description: 'Transaction types and related VAT rates',
     name
   })
   .shape({
-    type: string().required().oneOf([
-      'taxes',
-      'ticket',
-      'donation',
-      'ads',
-      'sponsorship',
-      'refund',
-      'online_service',
-      'physical_service',
-      'physical_good'
-    ]),
+    type: string().required().oneOf(typeEnums).meta({
+      oneOf: typeEnums
+    }),
     value: number().required().integer().meta({
-      description: 'Percent value. 1 === 0.01%, 100 === 1%'
+      description: 'Percent value. 1 === 0.01%, 100 === 1%',
+      type: 'percent'
     }),
     note: string().required(),
     fromCountry: string().required().length(2).matches(/^[A-Z]{2}$/),

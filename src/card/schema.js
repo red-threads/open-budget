@@ -5,14 +5,21 @@ const toResourceType = require('../converters/to-resource-type')
 const modelName = 'Card'
 const name = 'card'
 
+const categoryEnums = ['business', 'person']
+const currencyEnums = ['EUR', 'GBP']
+
 const schema = object()
   .meta({
     description: 'Address and contact information for a company, person, organization. It tries to mimick the format available at http://microformats.org/wiki/h-card',
     name
   })
   .shape({
-    category: string().required().oneOf(['business', 'person']),
-    name: string().required(),
+    category: string().required().oneOf(categoryEnums).meta({
+      oneOf: categoryEnums
+    }),
+    name: string().required().meta({
+      isIndex: true
+    }),
     givenName: string(),
     additionalName: string(),
     familyName: string(),
@@ -45,7 +52,10 @@ const schema = object()
       .meta({
         description: 'IBAN is usually enough, unless we deal with non-Euro currencies (and non-SEPA IBANs)'
       }),
-    currency: string().oneOf(['EUR', 'GBP'])
+    currency: string().oneOf(currencyEnums)
+      .meta({
+        oneOf: currencyEnums
+      })
       .default('EUR')
       .label('Account currency')
   })

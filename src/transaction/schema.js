@@ -5,6 +5,9 @@ const toResourceType = require('../converters/to-resource-type')
 const modelName = 'Transaction'
 const name = 'transaction'
 
+const statusOneOf = ['pending', 'processed']
+const sourceOneOf = ['manual', 'csv', 'data_sync']
+
 const schema = object()
   .meta({
     description: 'Transaction',
@@ -38,8 +41,12 @@ const schema = object()
         return v === this.gross - this.vat - this.gatewayFee
       }
     }),
-    status: string().required().oneOf(['pending', 'processed']),
-    source: string().default('manual').oneOf(['manual', 'csv', 'data_sync']),
+    status: string().required().oneOf(statusOneOf).meta({
+      oneOf: statusOneOf
+    }),
+    source: string().default('manual').oneOf(sourceOneOf).meta({
+      oneOf: sourceOneOf
+    }),
     originalTransaction: mixed().meta({
       type: 'ObjectId',
       ref: 'Transaction',
