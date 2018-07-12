@@ -20,10 +20,14 @@ function getType ({ type, innerType, meta = {} }) {
   }
 }
 
-function extractMeta ({ meta: { type, ref } = {} }) {
-  if (type === 'ObjectId' && ref) {
+function extractMeta ({ type, meta: { type: metaType, ref, oneOf } = {} }) {
+  if (metaType === 'ObjectId' && ref) {
     return {
       ref
+    }
+  } else if (type === 'string' && oneOf) {
+    return {
+      enum: oneOf
     }
   }
 }
