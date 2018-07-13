@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/red-threads/open-budget-api/compare/v0.1.2...v0.2.0) (2018-07-13)
+
+
+### Bug Fixes
+
+* **schema:** add labels ([11e061c](https://github.com/red-threads/open-budget-api/commit/11e061c))
+
+
+### Features
+
+* expose enums as meta ([ca94fc5](https://github.com/red-threads/open-budget-api/commit/ca94fc5))
+* **mongoose:** expose enum types ([57a6111](https://github.com/red-threads/open-budget-api/commit/57a6111))
+
+
+
 <a name="0.1.2"></a>
 ## [0.1.2](https://github.com/red-threads/open-budget-api/compare/v0.1.1...v0.1.2) (2018-06-25)
 
