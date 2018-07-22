@@ -1,4 +1,5 @@
 require('dotenv').config()
+const cors = require('cors')
 const app = require('express')()
 const API = require('json-api')
 
@@ -12,6 +13,19 @@ const transactionType = require('./transaction-type')
 
 const port = process.env.PORT || 3000
 const host = process.env.NOW ? `http://${alias}.now.sh` : `http://127.0.0.1:${port}`
+const corsWhitelist = process.env.CORS_HOSTS.split(',') || [
+  'http://localhost:3000',
+  'https://localhost:3000'
+]
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (corsWhitelist.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 const entities = [
   card,
   organization,
@@ -48,6 +62,7 @@ const { apiRequest, docsRequest } = new API.httpStrategies.Express(Controller, D
   host
 })
 
+app.options('*', cors(corsOptions))
 app.get('/', docsRequest)
 app.get(`/:type(${entitiesToRoutes})`, apiRequest)
 app.get(`/:type(${entitiesToRoutes})/:id`, apiRequest)
@@ -63,4 +78,6 @@ app.delete(`/:type(${entitiesToRoutes}|places)/:id/relationships/:relationship`,
 */
 
 app.use(rollbar.errorHandler())
+app.use(cors(corsOptions))
+
 app.listen(port)
