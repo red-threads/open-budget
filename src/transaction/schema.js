@@ -1,4 +1,4 @@
-const { mixed, number, object, string } = require('yup')
+const { number, object, string } = require('yup')
 
 const toResourceType = require('../converters/to-resource-type')
 
@@ -14,10 +14,29 @@ const schema = object()
     name
   })
   .shape({
-    type: mixed().required().meta({ type: 'ObjectId', ref: 'TransactionType' }),
-    from: mixed().required().meta({ type: 'ObjectId', ref: 'Card' }),
-    gateway: mixed().meta({ type: 'ObjectId', ref: 'Organization' }),
-    to: mixed().required().meta({ type: 'ObjectId', ref: 'Card' }),
+    type: object()
+      .shape({
+        id: string()
+      })
+      .required()
+      .meta({ type: 'ObjectId', ref: 'TransactionType' }),
+    from: object()
+      .shape({
+        id: string()
+      })
+      .required()
+      .meta({ type: 'ObjectId', ref: 'Card' }),
+    gateway: object()
+      .shape({
+        id: string()
+      })
+      .meta({ type: 'ObjectId', ref: 'Organization' }),
+    to: object()
+      .shape({
+        id: string()
+      })
+      .required()
+      .meta({ type: 'ObjectId', ref: 'Card' }),
     gross: number().required().integer().meta({
       validate: function (v) {
         return v === this.gatewayFee + this.vat + this.net
@@ -47,11 +66,15 @@ const schema = object()
     source: string().default('manual').oneOf(sourceOneOf).meta({
       oneOf: sourceOneOf
     }),
-    originalTransaction: mixed().meta({
-      type: 'ObjectId',
-      ref: 'Transaction',
-      description: 'In case this transaction originates from another recorded transaction (e.g.: refund), please use this field'
-    }),
+    originalTransaction: object()
+    .shape({
+      id: string()
+    })
+      .meta({
+        type: 'ObjectId',
+        ref: 'Transaction',
+        description: 'In case this transaction originates from another recorded transaction (e.g.: refund), please use this field'
+      }),
     invoice: string().meta({
       description: 'Link to a third-party invoice, if any'
     }),

@@ -15,8 +15,12 @@ function getType ({ type, innerType, meta = {} }) {
       return Date
     case 'array':
       return [ getType(innerType) ]
-    case 'mixed':
-      return Mongoose.Schema.Types[meta.type || 'Mixed']
+    case 'object':
+      if (meta.type) {
+        return Mongoose.Schema.Types[meta.type || 'Mixed']
+      }
+    default:
+      throw new Error('Type not implemented')
   }
 }
 
