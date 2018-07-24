@@ -19,6 +19,7 @@ function getType ({ type, innerType, meta = {} }) {
       if (meta.type) {
         return Mongoose.Schema.Types[meta.type || 'Mixed']
       }
+      throw new Error('Type not implemented')
     default:
       throw new Error('Type not implemented')
   }
