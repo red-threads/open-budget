@@ -67,9 +67,9 @@ const schema = object()
       oneOf: sourceOneOf
     }),
     originalTransaction: object()
-    .shape({
-      id: string()
-    })
+      .shape({
+        id: string()
+      })
       .meta({
         type: 'ObjectId',
         ref: 'Transaction',
