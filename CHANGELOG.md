@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/red-threads/open-budget-api/compare/v0.2.1...v0.3.0) (2018-07-24)
+
+
+### Bug Fixes
+
+* missing else statement ([6f511ed](https://github.com/red-threads/open-budget-api/commit/6f511ed))
+* move ObjectID types from mixed to object type ([657b509](https://github.com/red-threads/open-budget-api/commit/657b509))
+
+
+### Features
+
+* enable CORS ([66c26b4](https://github.com/red-threads/open-budget-api/commit/66c26b4))
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/red-threads/open-budget-api/compare/v0.2.0...v0.2.1) (2018-07-13)
 
