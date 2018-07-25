@@ -19,7 +19,7 @@ const corsWhitelist = process.env.CORS_HOSTS.split(',') || [
 ]
 const corsOptions = {
   origin: function (origin, callback) {
-    if (corsWhitelist.includes(origin)) {
+    if (corsWhitelist.includes(origin) || !origin) {
       callback(null, true)
     } else {
       callback(new Error('Not allowed by CORS'))
