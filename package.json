@@ -17,10 +17,10 @@
     "dev": "PORT=3030 nodemon --inspect",
     "push-tags": "git push --follow-tags origin master",
     "deploy": "now --public && now alias && now rm @red-threads/open-budget-api -sy",
-    "publish": "npm publish",
+    "publish": "npm publish --access=public",
     "prerelease": "npm run lint",
     "release": "standard-version",
-    "postrelease": "run-p push-tags deploy publish"
+    "postrelease": "run-p push-tags deploy"
   },
   "keywords": [
     "red-threads",
