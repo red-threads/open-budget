@@ -1,4 +1,5 @@
 require('dotenv').config()
+const timeout = require('connect-timeout')
 const cors = require('cors')
 const app = require('express')()
 const API = require('json-api')
@@ -62,7 +63,10 @@ const { apiRequest, docsRequest } = new API.httpStrategies.Express(Controller, D
   host
 })
 
-app.options('*', cors(corsOptions))
+app.use(cors(corsOptions))
+app.use(timeout(5000))
+
+app.options('*')
 app.get('/', docsRequest)
 app.get(`/:type(${entitiesToRoutes})`, apiRequest)
 app.get(`/:type(${entitiesToRoutes})/:id`, apiRequest)
@@ -78,6 +82,5 @@ app.delete(`/:type(${entitiesToRoutes}|places)/:id/relationships/:relationship`,
 */
 
 app.use(rollbar.errorHandler())
-app.use(cors(corsOptions))
 
 app.listen(port)

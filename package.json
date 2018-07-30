@@ -32,6 +32,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
+    "connect-timeout": "^1.9.0",
     "cors": "^2.8.4",
     "csv-parse": "^2.5.0",
     "dotenv": "^6.0.0",
@@ -62,6 +63,8 @@
       "MONGO_USERNAME": "@mongo-username",
       "MONGO_PASSWORD": "@mongo-password",
       "MONGO_SERVER": "@mongo-server",
+      "MONGO_DB": "@mongo-db",
+      "MONGO_PROTOCOL": "@mongo-protocol",
       "NODE_ENV": "production",
       "ROLLBAR_TOKEN": "@rollbar-token",
       "CORS_HOSTS": "@cors-hosts"
