@@ -1,8 +1,10 @@
+const { host } = require('../host')
+
 function toResourceType (name, schema) {
   const { meta: { description } = {}, fields } = schema.describe()
   return {
     urlTemplates: {
-      self: `/${name}/{id}`
+      self: `${host}/${name}/{id}`
     },
     info: {
       description,

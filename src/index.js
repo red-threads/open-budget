@@ -6,21 +6,16 @@ const API = require('json-api')
 
 const card = require('./card')
 const db = require('./db')
+const { allowedCORSHosts, host, port } = require('./host')
 const organization = require('./organization')
-const { description: name, now: { alias } } = require('../package.json')
+const { description: name } = require('../package.json')
 const rollbar = require('./rollbar')
 const transaction = require('./transaction')
 const transactionType = require('./transaction-type')
 
-const port = process.env.PORT || 3000
-const host = process.env.NOW ? `http://${alias}.now.sh` : `http://127.0.0.1:${port}`
-const corsWhitelist = process.env.CORS_HOSTS.split(',') || [
-  'http://localhost:3000',
-  'https://localhost:3000'
-]
 const corsOptions = {
   origin: function (origin, callback) {
-    if (corsWhitelist.includes(origin) || !origin) {
+    if (allowedCORSHosts.includes(origin) || !origin) {
       callback(null, true)
     } else {
       callback(new Error('Not allowed by CORS'))
@@ -51,7 +46,7 @@ const dbAdapter = new API.dbAdapters.Mongoose(models)
 const registry = new API.ResourceTypeRegistry(resources, {
   dbAdapter,
   urlTemplates: {
-    self: '/{type}/{id}'
+    self: `${host}/{type}/{id}`
   }
 })
 
