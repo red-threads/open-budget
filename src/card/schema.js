@@ -1,4 +1,4 @@
-const { string, object, date } = require('yup')
+const { array, string, object, date } = require('yup')
 
 const toResourceType = require('../converters/to-resource-type')
 
@@ -57,7 +57,13 @@ const schema = object()
         oneOf: currencyEnums
       })
       .default('EUR')
-      .label('Account currency')
+      .label('Account currency'),
+    aliases: array()
+      .of(string())
+      .label('List of possible aliases')
+      .meta({
+        description: 'e.g. payment references to match when uploading bulk transactions'
+      })
   })
 
 exports.modelName = modelName
