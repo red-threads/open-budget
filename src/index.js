@@ -2,7 +2,10 @@ require('dotenv').config()
 const timeout = require('connect-timeout')
 const cors = require('cors')
 const app = require('express')()
+const jwt = require('express-jwt')
+const jwtAuthz = require('express-jwt-authz')
 const API = require('json-api')
+const jwks = require('jwks-rsa')
 
 const card = require('./card')
 const db = require('./db')
@@ -22,6 +25,20 @@ const corsOptions = {
     }
   }
 }
+
+const jwtCheck = jwt({
+  secret: jwks.expressJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: process.env.JWT_JWKS_URI
+  }),
+  audience: process.env.JWT_AUDIENCE,
+  issuer: process.env.JWT_ISSUER,
+  algorithms: ['RS256']
+})
+
+
 const entities = [
   card,
   organization,
@@ -36,9 +53,6 @@ const resources = entities.reduce((resourcesToReturn, { pluralName, resourceType
   resourcesToReturn[pluralName] = resourceType
   return resourcesToReturn
 }, {})
-const entitiesToRoutes = entities
-  .map(({ pluralName }) => pluralName)
-  .join('|')
 
 db()
 
@@ -63,18 +77,14 @@ app.use(timeout(5000))
 
 app.options('*')
 app.get('/', docsRequest)
-app.get(`/:type(${entitiesToRoutes})`, apiRequest)
-app.get(`/:type(${entitiesToRoutes})/:id`, apiRequest)
-app.post(`/:type(${entitiesToRoutes})`, apiRequest)
-app.patch(`/:type(${entitiesToRoutes})/:id`, apiRequest)
-app.delete(`/:type(${entitiesToRoutes})/:id`, apiRequest)
 
-// Add routes for adding to, removing from, or updating resource relationships
-/*
-app.post(`/:type(${entitiesToRoutes}|places)/:id/relationships/:relationship`, apiRequest)
-app.patch(`/:type(${entitiesToRoutes}|places)/:id/relationships/:relationship`, apiRequest)
-app.delete(`/:type(${entitiesToRoutes}|places)/:id/relationships/:relationship`, apiRequest)
-*/
+entities.forEach(({ name, pluralName }) => {
+  app.get(`/:type(${pluralName})`, jwtCheck, jwtAuthz([`list:${name}`]), apiRequest)
+  app.get(`/:type(${pluralName})/:id`, jwtCheck, jwtAuthz([`read:${name}`]), apiRequest)
+  app.post(`/:type(${pluralName})`, jwtCheck, jwtAuthz([`create:${name}`]), apiRequest)
+  app.patch(`/:type(${pluralName})/:id`, jwtCheck, jwtAuthz([`update:${name}`]), apiRequest)
+  app.delete(`/:type(${pluralName})/:id`, jwtCheck, jwtAuthz([`delete:${name}`]), apiRequest)
+})
 
 app.use(rollbar.errorHandler())
 
