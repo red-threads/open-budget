@@ -28,16 +28,15 @@ const corsOptions = {
 
 const jwtCheck = jwt({
   secret: jwks.expressJwtSecret({
-      cache: true,
-      rateLimit: true,
-      jwksRequestsPerMinute: 5,
-      jwksUri: process.env.JWT_JWKS_URI
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: process.env.JWT_JWKS_URI
   }),
   audience: process.env.JWT_AUDIENCE,
   issuer: process.env.JWT_ISSUER,
   algorithms: ['RS256']
 })
-
 
 const entities = [
   card,
