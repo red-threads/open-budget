@@ -10,17 +10,17 @@
     "npm": "6.x.x"
   },
   "scripts": {
+    "deploy": "now --public && now alias && now rm @red-threads/open-budget-api -sy",
+    "dev": "PORT=3030 nodemon --inspect",
     "jest": "NODE_ENV=test jest",
     "lint": "standard --fix",
-    "test": "run-p lint jest",
-    "start": "PORT=3030 node .",
-    "dev": "PORT=3030 nodemon --inspect",
-    "push-tags": "git push --follow-tags origin master",
-    "deploy": "now --public && now alias && now rm @red-threads/open-budget-api -sy",
-    "publish": "npm publish --access=public",
+    "postrelease": "run-p push-tags deploy",
     "prerelease": "npm run lint",
+    "publish": "npm publish --access=public",
+    "push-tags": "git push --follow-tags origin master",
     "release": "standard-version",
-    "postrelease": "run-p push-tags deploy"
+    "start": "PORT=3030 node .",
+    "test": "run-p lint jest"
   },
   "keywords": [
     "red-threads",
@@ -34,23 +34,23 @@
     "axios": "^0.18.0",
     "connect-timeout": "^1.9.0",
     "cors": "^2.8.4",
-    "dotenv": "^6.0.0",
-    "express": "^4.16.3",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
     "express-jwt": "^5.3.1",
     "express-jwt-authz": "^1.0.0",
     "json-api": "^3.0.0-rc.6.0.1",
     "jwks-rsa": "^1.3.0",
-    "mongoose": "^5.3.1",
+    "mongoose": "^5.3.7",
     "negotiator": "github:ethanresnick/negotiator#full-parse-access",
     "npm-run-all": "^4.1.3",
     "pluralize": "^7.0.0",
-    "rollbar": "^2.4.7",
+    "rollbar": "^2.5.0",
     "timm": "^1.6.1",
     "yup": "^0.26.6"
   },
   "devDependencies": {
     "jest": "^23.6.0",
-    "nodemon": "^1.18.4",
+    "nodemon": "^1.18.5",
     "now": "^11.4.6",
     "standard": "^12.0.1",
     "standard-version": "^4.4.0"
