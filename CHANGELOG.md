@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/red-threads/open-budget-api/compare/v0.4.2...v0.5.0) (2018-10-28)
+
+
+### Features
+
+* **auth:** secure API endpoints ([0cd2ace](https://github.com/red-threads/open-budget-api/commit/0cd2ace))
+* **card:** add alias property ([ab61715](https://github.com/red-threads/open-budget-api/commit/ab61715))
+
+
+
 <a name="0.4.2"></a>
 ## [0.4.2](https://github.com/red-threads/open-budget-api/compare/v0.4.1...v0.4.2) (2018-10-05)
 
