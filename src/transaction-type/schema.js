@@ -30,7 +30,9 @@ const schema = object()
       description: 'Percent value. 1 === 0.01%, 100 === 1%',
       type: 'percent'
     }),
-    note: string().required(),
+    note: string().meta({
+      description: 'Note added to invoices using this transaction type'
+    }).required(),
     fromCountry: string().required().length(2).matches(/^[A-Z]{2}$/),
     toCountry: string().required().length(2).matches(/^[A-Z]{2}$/)
   })
