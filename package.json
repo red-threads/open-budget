@@ -10,11 +10,10 @@
     "npm": "6.x.x"
   },
   "scripts": {
-    "deploy": "now --public && now alias && now rm @red-threads/open-budget-api -sy",
     "dev": "PORT=3030 nodemon --inspect",
     "jest": "NODE_ENV=test jest",
     "lint": "standard --fix",
-    "postrelease": "run-p push-tags deploy",
+    "postrelease": "npm run push-tags",
     "prerelease": "npm run lint",
     "publish": "npm publish --access=public",
     "push-tags": "git push --follow-tags origin master",
