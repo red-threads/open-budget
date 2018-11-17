@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.2"></a>
+## [0.6.2](https://github.com/red-threads/open-budget-api/compare/v0.6.1...v0.6.2) (2018-11-17)
+
+
+### Bug Fixes
+
+* include new deploy script ([c3ba507](https://github.com/red-threads/open-budget-api/commit/c3ba507))
+* remove hardcoded urls, now logic ([c792cdf](https://github.com/red-threads/open-budget-api/commit/c792cdf))
+
+
+
 <a name="0.6.1"></a>
 ## [0.6.1](https://github.com/red-threads/open-budget-api/compare/v0.6.0...v0.6.1) (2018-11-17)
 
