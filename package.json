@@ -10,10 +10,11 @@
     "npm": "6.x.x"
   },
   "scripts": {
+    "deploy": "git push dokku master",
     "dev": "PORT=3030 nodemon --inspect",
     "jest": "NODE_ENV=test jest",
     "lint": "standard --fix",
-    "postrelease": "npm run push-tags",
+    "postrelease": "run-p push-tags deploy",
     "prerelease": "npm run lint",
     "publish": "npm publish --access=public",
     "push-tags": "git push --follow-tags origin master",
