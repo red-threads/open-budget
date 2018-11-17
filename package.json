@@ -19,7 +19,7 @@
     "publish": "npm publish --access=public",
     "push-tags": "git push --follow-tags origin master",
     "release": "standard-version",
-    "start": "PORT=3030 node .",
+    "start": "node .",
     "test": "run-p lint jest"
   },
   "keywords": [
@@ -51,28 +51,11 @@
   "devDependencies": {
     "jest": "^23.6.0",
     "nodemon": "^1.18.5",
-    "now": "^11.4.6",
     "standard": "^12.0.1",
     "standard-version": "^4.4.0"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/red-threads/open-budget-api.git"
-  },
-  "now": {
-    "alias": "open-budget-api",
-    "env": {
-      "CORS_HOSTS": "@cors-hosts",
-      "JWT_AUDIENCE": "@jwt-audience",
-      "JWT_ISSUER": "@jwt-issuer",
-      "JWT_JWKS_URI": "@jwt-jwks-uri",
-      "MONGO_DB": "@mongo-db",
-      "MONGO_PASSWORD": "@mongo-password",
-      "MONGO_PROTOCOL": "@mongo-protocol",
-      "MONGO_SERVER": "@mongo-server",
-      "MONGO_USERNAME": "@mongo-username",
-      "NODE_ENV": "production",
-      "ROLLBAR_TOKEN": "@rollbar-token"
-    }
   }
 }
