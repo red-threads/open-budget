@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 const rollbar = require('../rollbar')
 
-const url = `${process.env.MONGO_PROTOCOL}://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_SERVER}/${process.env.MONGO_DB}?retryWrites=true`
-
 module.exports = function () {
-  console.info('will connect to', process.env.MONGO_SERVER)
-  mongoose.connect(url)
+  console.info('will connect to MongoDB')
+  mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
+    useNewUrlParser: true
+  })
   mongoose.connection.on('error', (err) => {
     console.error('Connection failed')
     console.error(err)
