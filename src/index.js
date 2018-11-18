@@ -76,6 +76,7 @@ app.use(timeout(5000))
 
 app.options('*')
 app.get('/', docsRequest)
+app.get('/ping/api', apiRequest)
 
 entities.forEach(({ name, pluralName }) => {
   app.get(`/:type(${pluralName})`, jwtCheck, jwtAuthz([`list:${name}`]), apiRequest)
